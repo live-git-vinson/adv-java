@@ -13,7 +13,7 @@ public class Course implements Serializable {
 	public Course(String name, int iD, String professorString, String startDate, String daysOfTheWeek) {
 		super();
 		this.name = name;
-		ID = iD;
+		this.ID = iD;
 		this.professorString = professorString;
 		this.startDate = startDate;
 		this.daysOfTheWeek = daysOfTheWeek;

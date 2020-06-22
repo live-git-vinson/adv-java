@@ -15,13 +15,15 @@ public class Lab2Project {
 	static List<Course> courseList = new ArrayList<Course>();
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		boolean contProcess = true;
+		
 		FileOutputStream fileOutputStream = new FileOutputStream(file);
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
 		FileInputStream fileInputStream = new FileInputStream(file);
 		ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+		
 		GetInteger intScanner = new GetInteger();
+		boolean contProcess = true;
 		do {
 			// ask the user what they want to do and call that function
 			System.out.println("Please Choose an Option:");
@@ -61,7 +63,6 @@ public class Lab2Project {
 				break;
 			default:
 				System.out.println("Incorrect Option");
-
 				break;
 			}
 		} while (contProcess);
