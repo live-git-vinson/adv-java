@@ -2,6 +2,7 @@ package com.cognixia.jump.fullstack.projects;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Course implements Serializable {
 	public String name;
 	public int ID;

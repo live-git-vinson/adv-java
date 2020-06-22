@@ -1,11 +1,7 @@
 package com.cognixia.jump.fullstack.projects;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,15 +9,15 @@ public class Lab2Project {
 
 	static File file = new File("CourseDB.dat");
 	static List<Course> courseList = new ArrayList<Course>();
+	static CourseListWrite courseListWrite;
+
+	static CourseListRead courseListRead;
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		
-		FileOutputStream fileOutputStream = new FileOutputStream(file);
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-		FileInputStream fileInputStream = new FileInputStream(file);
-		ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-		
+		courseListWrite = new CourseListWrite();
+		courseListRead = new CourseListRead();
+
 		GetInteger intScanner = new GetInteger();
 		boolean contProcess = true;
 		do {
@@ -40,23 +36,23 @@ public class Lab2Project {
 
 			case 1:
 				System.out.println("Add a course");
-				addToCourseList(objectInputStream, objectOutputStream, fileOutputStream);
+				addToCourseList();
 				break;
 			case 2:
 				System.out.println("Update a course");
-				updateCourseList(objectInputStream, objectOutputStream);
+				updateCourseList();
 				break;
 			case 3:
 				System.out.println("Remove a course");
-				removeFromCourseList(objectInputStream, objectOutputStream);
+				removeFromCourseList();
 				break;
 			case 4:
 				System.out.println("List all Courses");
-				displayCourseList(objectInputStream);
+				displayCourseList();
 				break;
 			case 5:
 				System.out.println("Course List Initialized");
-				initializeCourse(objectOutputStream);
+				initializeCourse();
 				break;
 			case 6:
 				contProcess = false;
@@ -67,20 +63,17 @@ public class Lab2Project {
 			}
 		} while (contProcess);
 
-		fileInputStream.close();
-		objectInputStream.close();
+		courseListWrite.close();
 
-		fileOutputStream.close();
-		objectOutputStream.close();
+		courseListRead.close();
 
 		intScanner.closeScanner();
 
 	}
 
-	public static void addToCourseList(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream,
-			FileOutputStream fileOutputStream) throws ClassNotFoundException, IOException {
+	public static void addToCourseList() throws ClassNotFoundException, IOException {
 		// reads from file
-		courseList = CourseListRead.readCourses(objectInputStream);
+		courseList = courseListRead.readCourses();
 
 		// Take Info for a course
 		String name = "Math";
@@ -94,36 +87,45 @@ public class Lab2Project {
 		courseList.add(newCourse);
 
 		// Write courseList to file.
-		CourseListWrite.writeCourses(objectOutputStream, courseList);
+		courseListWrite.writeCourses(courseList);
 		System.out.println("Course Added");
 	}
 
-	public static void removeFromCourseList(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream)
-			throws ClassNotFoundException, IOException {
+	public static void removeFromCourseList() throws ClassNotFoundException, IOException {
 
 		// reads from file
-		courseList = CourseListRead.readCourses(objectInputStream);
+		courseList = courseListRead.readCourses();
 
 		// Ask which Course to remove
-		int courseID = 0;
+
 		// get course id
-		courseID = 101;
+		int removeCourseID = 102;
 		// look for a course with that id and remove it
+
+		boolean found = false;
 		for (Course course : courseList) {
-			if (course.ID == courseID) {
+			System.out.println(removeCourseID + " " + course.ID);
+			if (course.ID == removeCourseID) {
+				found = true;
+				System.out.println(found);
 				courseList.remove(course);
 			}
 		}
+		if (found) {
+			// Write back to file
+			courseListWrite.writeCourses(courseList);
+			System.out.println("Course Removed");
 
-		// Write back to file
-		CourseListWrite.writeCourses(objectOutputStream, courseList);
-		System.out.println("Course Removed");
+		} else {
+			System.out.println("No Course that matches description");
+
+			System.out.println(found);
+		}
 	}
 
-	public static void updateCourseList(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream)
-			throws ClassNotFoundException, IOException {
+	public static void updateCourseList() throws ClassNotFoundException, IOException {
 		// reads from file
-		courseList = CourseListRead.readCourses(objectInputStream);
+		courseList = courseListRead.readCourses();
 
 		// Ask which Course to update
 		int courseID = 0;
@@ -141,25 +143,23 @@ public class Lab2Project {
 		courseList.add(updatedCourse);
 
 		// Write back to file
-		CourseListWrite.writeCourses(objectOutputStream, courseList);
+		courseListWrite.writeCourses(courseList);
 		System.out.println("Course updated");
 	}
 
-	public static void displayCourseList(ObjectInputStream objectInputStream)
-			throws ClassNotFoundException, IOException {
+	public static void displayCourseList() throws ClassNotFoundException, IOException {
 		// reads from file
-		courseList = CourseListRead.readCourses(objectInputStream);
+		courseList = courseListRead.readCourses();
 		// Display using toString
 
 		System.out.println(courseList.toString());
 	}
 
-	public static void initializeCourse(ObjectOutputStream objectOutputStream)
-			throws ClassNotFoundException, IOException {
+	public static void initializeCourse() throws ClassNotFoundException, IOException {
 		Course math = new Course("Math", 102, "Bob Nevers", "Today", "MWF");
 		Course Science = new Course("Science", 103, "Bob Hill", "Today", "MWF");
 		courseList.add(math);
 		courseList.add(Science);
-		objectOutputStream.writeObject(courseList);
+		courseListWrite.writeCourses(courseList);
 	}
 }
