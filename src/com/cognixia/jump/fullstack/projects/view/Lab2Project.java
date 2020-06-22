@@ -1,9 +1,14 @@
-package com.cognixia.jump.fullstack.projects;
+package com.cognixia.jump.fullstack.projects.view;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.cognixia.jump.fullstack.projects.Course;
+import com.cognixia.jump.fullstack.projects.business.GetInteger;
+import com.cognixia.jump.fullstack.projects.repository.CourseListRead;
+import com.cognixia.jump.fullstack.projects.repository.CourseListWrite;
 
 public class Lab2Project {
 
@@ -127,15 +132,28 @@ public class Lab2Project {
 		// reads from file
 		courseList = courseListRead.readCourses();
 
-		// Ask which Course to update
-		int courseID = 0;
 		// get course id
-		courseID = 101;
+		int removeCourseID = 102;
 		// look for a course with that id and remove it
+
+		boolean found = false;
 		for (Course course : courseList) {
-			if (course.ID == courseID) {
+			System.out.println(removeCourseID + " " + course.ID);
+			if (course.ID == removeCourseID) {
+				found = true;
+				System.out.println(found);
 				courseList.remove(course);
 			}
+		}
+		if (found) {
+			// Write back to file
+			courseListWrite.writeCourses(courseList);
+			System.out.println("Course Removed");
+
+		} else {
+			System.out.println("No Course that matches description");
+
+			System.out.println(found);
 		}
 
 		// get new course info to add

@@ -1,10 +1,12 @@
-package com.cognixia.jump.fullstack.projects;
+package com.cognixia.jump.fullstack.projects.repository;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
+
+import com.cognixia.jump.fullstack.projects.Course;
 
 public class CourseListWrite {
 

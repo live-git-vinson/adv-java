@@ -1,4 +1,4 @@
-package com.cognixia.jump.fullstack.projects;
+package com.cognixia.jump.fullstack.projects.business;
 
 import java.util.Scanner;
 
