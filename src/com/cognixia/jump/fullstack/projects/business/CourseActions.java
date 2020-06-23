@@ -1,4 +1,4 @@
-package com.cognixia.jump.fullstack.projects.view;
+package com.cognixia.jump.fullstack.projects.business;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,77 +6,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cognixia.jump.fullstack.projects.Course;
-import com.cognixia.jump.fullstack.projects.business.GetInteger;
 import com.cognixia.jump.fullstack.projects.repository.CourseListRead;
 import com.cognixia.jump.fullstack.projects.repository.CourseListWrite;
 
-public class Lab2Project {
+public class CourseActions {
 
 	static File file = new File("CourseDB.dat");
 	static List<Course> courseList = new ArrayList<Course>();
 	static CourseListWrite courseListWrite;
-
 	static CourseListRead courseListRead;
 
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
-
+	public CourseActions() throws IOException {
 		courseListWrite = new CourseListWrite();
 		courseListRead = new CourseListRead();
-
-		GetInteger intScanner = new GetInteger();
-		boolean contProcess = true;
-		do {
-			// ask the user what they want to do and call that function
-			System.out.println("Please Choose an Option:");
-			System.out.println("1: Add a Course");
-			System.out.println("2: Update a course");
-			System.out.println("3: Remove a course");
-			System.out.println("4: Display course list");
-			System.out.println("5: Initialize course list");
-			System.out.println("6: Exit");
-
-			int userInput = intScanner.getInt();
-
-			switch (userInput) {
-
-			case 1:
-				System.out.println("Add a course");
-				addToCourseList();
-				break;
-			case 2:
-				System.out.println("Update a course");
-				updateCourseList();
-				break;
-			case 3:
-				System.out.println("Remove a course");
-				removeFromCourseList();
-				break;
-			case 4:
-				System.out.println("List all Courses");
-				displayCourseList();
-				break;
-			case 5:
-				System.out.println("Course List Initialized");
-				initializeCourse();
-				break;
-			case 6:
-				contProcess = false;
-				break;
-			default:
-				System.out.println("Incorrect Option");
-				break;
-			}
-		} while (contProcess);
-
-		courseListWrite.close();
-
-		courseListRead.close();
-
-		intScanner.closeScanner();
-
 	}
 
-	public static void addToCourseList() throws ClassNotFoundException, IOException {
+	public void close() throws IOException {
+		courseListWrite.close();
+		courseListRead.close();
+	}
+
+	public void addToCourseList() throws ClassNotFoundException, IOException {
+
 		// reads from file
 		courseList = courseListRead.readCourses();
 
@@ -96,7 +47,7 @@ public class Lab2Project {
 		System.out.println("Course Added");
 	}
 
-	public static void removeFromCourseList() throws ClassNotFoundException, IOException {
+	public void removeFromCourseList() throws ClassNotFoundException, IOException {
 
 		// reads from file
 		courseList = courseListRead.readCourses();
@@ -128,7 +79,7 @@ public class Lab2Project {
 		}
 	}
 
-	public static void updateCourseList() throws ClassNotFoundException, IOException {
+	public void updateCourseList() throws ClassNotFoundException, IOException {
 		// reads from file
 		courseList = courseListRead.readCourses();
 
@@ -165,7 +116,7 @@ public class Lab2Project {
 		System.out.println("Course updated");
 	}
 
-	public static void displayCourseList() throws ClassNotFoundException, IOException {
+	public void displayCourseList() throws ClassNotFoundException, IOException {
 		// reads from file
 		courseList = courseListRead.readCourses();
 		// Display using toString
@@ -173,7 +124,7 @@ public class Lab2Project {
 		System.out.println(courseList.toString());
 	}
 
-	public static void initializeCourse() throws ClassNotFoundException, IOException {
+	public void initializeCourse() throws ClassNotFoundException, IOException {
 		Course math = new Course("Math", 102, "Bob Nevers", "Today", "MWF");
 		Course Science = new Course("Science", 103, "Bob Hill", "Today", "MWF");
 		courseList.add(math);
